@@ -124,9 +124,7 @@ int main(void) {
             }
         }
         if (hit_self) {
-            move_cursor(1, 3);
-            printf("= game over (self collision) | q=quit");
-            fflush(stdout);
+            draw_game_over(snake_len - 1);
             break;
         }
 

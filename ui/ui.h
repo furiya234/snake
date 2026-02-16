@@ -64,4 +64,11 @@ int  read_key(void);
  */
 void draw_welcome(void);
 
+/**
+ * 게임 오버 화면을 표시한다.
+ * 화면 중앙에 "GAME OVER"와 점수를 출력하고 키 입력을 대기한다.
+ * @param score 표시할 점수
+ */
+void draw_game_over(int score);
+
 #endif

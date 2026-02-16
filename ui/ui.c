@@ -266,3 +266,57 @@ void draw_welcome(void) {
 
     clear_screen();
 }
+
+void draw_game_over(int score) {
+    int rows, cols;
+    get_screen_size(&rows, &cols);
+    clear_screen();
+
+    /* 1. gameover.txt 읽기 */
+    FILE *fp = fopen("ui/gameover.txt", "r");
+    char art[LOGO_MAX_ROWS][LOGO_MAX_LINE];
+    int art_h = 0;
+    int art_w = 0;
+
+    if (fp) {
+        while (art_h < LOGO_MAX_ROWS && fgets(art[art_h], LOGO_MAX_LINE, fp)) {
+            int len = (int)strlen(art[art_h]);
+            if (len > 0 && art[art_h][len - 1] == '\n') {
+                art[art_h][len - 1] = '\0';
+                len--;
+            }
+            if (len > art_w) art_w = len;
+            art_h++;
+        }
+        fclose(fp);
+    }
+
+    /* 2. 아트 + score + prompt 전체 높이를 기준으로 중앙 배치 */
+    int total_h = art_h + 4; /* art + 빈줄 + score + 빈줄 + prompt */
+    int off_r = (rows - total_h) / 2;
+    if (off_r < 1) off_r = 1;
+    int off_c = (cols - art_w) / 2;
+    if (off_c < 1) off_c = 1;
+
+    for (int i = 0; i < art_h; i++) {
+        move_cursor(off_r + i, off_c);
+        printf("%s", art[i]);
+    }
+
+    /* 3. score */
+    char score_buf[64];
+    int score_len = snprintf(score_buf, sizeof(score_buf), "Score: %d", score);
+    move_cursor(off_r + art_h + 1, (cols - score_len) / 2);
+    printf("%s", score_buf);
+
+    /* 4. prompt */
+    const char *prompt = "Press any key to quit...";
+    int prompt_len = (int)strlen(prompt);
+    move_cursor(off_r + art_h + 3, (cols - prompt_len) / 2);
+    printf("%s", prompt);
+
+    fflush(stdout);
+
+    while (read_key() == -1)
+        usleep(30000);
+}

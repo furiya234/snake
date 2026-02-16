@@ -57,4 +57,11 @@ void disable_raw_mode(void);
  */
 int  read_key(void);
 
+/**
+ * 웰컴 화면을 표시한다.
+ * 글자가 비처럼 떨어진 뒤 ui/logo.txt의 ASCII 아트가 나타난다.
+ * 아무 키나 누르면 종료한다.
+ */
+void draw_welcome(void);
+
 #endif

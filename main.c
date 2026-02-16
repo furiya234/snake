@@ -2,13 +2,17 @@
 #include <stdio.h>
 #include <unistd.h>
 
-int main(void) {
-    int rows, cols;
-    get_screen_size(&rows, &cols);
-
+void init_screen(){
     enable_raw_mode();
     hide_cursor();
     clear_screen();
+}
+
+int main(void) {
+    int rows, cols;
+    get_screen_size(&rows, &cols);
+    init_screen();
+    draw_welcome();
 
     draw_char(rows / 2, cols / 2, '@');
     draw_char(1, 1, 'q');
